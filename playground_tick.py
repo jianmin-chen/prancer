@@ -25,6 +25,7 @@ def tick(env, proj):
 proj = Projectile(point(0, 1, 0), normalize(vector(1, 1, 0)))
 env = Environment(vector(0, -0.1, 0), vector(-0.01, 0, 0))
 
-while proj.position.y > 0:
-    print(f"Position of projectile: {proj}")
-    proj = tick(env, proj)
+if __name__ == "__main__":
+    while proj.position.y > 0:
+        print(f"Position of projectile: {proj}")
+        proj = tick(env, proj)

@@ -1,5 +1,5 @@
 import math, unittest
-from tuple import Tuple, point, vector, magnitude, normalize, dot, cross
+from tuple import Tuple, Color, point, vector, magnitude, normalize, dot, cross
 
 
 class Tests(unittest.TestCase):
@@ -264,6 +264,66 @@ class Tests(unittest.TestCase):
         b = vector(2, 3, 4)
         self.assertEqual(cross(a, b), vector(-1, 2, -1))
         self.assertEqual(cross(b, a), vector(1, -2, 1))
+
+    def test_scenario23(self):
+        """
+        Scenario: Colors are (red, green, blue) tuples
+            Given c ← color(-0.5, 0.4, 1.7)
+            Then c.red = -0.5
+            And c.green = 0.4
+            And c.blue = 1.7
+        """
+
+        c = Color(-0.5, 0.4, 1.7)
+        self.assertEqual(c.red, -0.5)
+        self.assertEqual(c.green, 0.4)
+        self.assertEqual(c.blue, 1.7)
+
+    def test_scenario24(self):
+        """
+        Scenario: Adding colors
+            Given c1 ← color(0.9, 0.6, 0.75)
+            And c2 ← color(0.7, 0.1, 0.25)
+            Then c1 + c2 = color(1.6, 0.7, 1.0)
+        """
+
+        c1 = Color(0.9, 0.6, 0.75)
+        c2 = Color(0.7, 0.1, 0.25)
+        self.assertEqual(c1 + c2, Color(1.6, 0.7, 1.0))
+
+    def test_scenario25(self):
+        """
+        Scenario: Subtracting colors
+            Given c1 ← color(0.9, 0.6, 0.75)
+            And c2 ← color(0.7, 0.1, 0.25)
+            Then c1 - c2 = color(0.2, 0.5, 0.5)
+        """
+
+        c1 = Color(0.9, 0.6, 0.75)
+        c2 = Color(0.7, 0.1, 0.25)
+        self.assertEqual(c1 - c2, Color(0.2, 0.5, 0.5))
+
+    def test_scenario26(self):
+        """
+        Scenario: Multiplying a color by a scalar
+           Given c ← color(0.2, 0.3, 0.4)
+           Then c * 2 = color(0.4, 0.6, 0.8)
+        """
+
+        c = Color(0.2, 0.3, 0.4)
+        self.assertEqual(c * 2, Color(0.4, 0.6, 0.8))
+
+    def test_scenario27(self):
+        """
+        Scenario: Multiplying colors
+            Given c1 ← color(1, 0.2, 0.4)
+            And c2 ← color(0.9, 1, 0.1)
+            Then c1 * c2 = color(0.9, 0.2, 0.04)
+        """
+
+        c1 = Color(1, 0.2, 0.4)
+        c2 = Color(0.9, 1, 0.1)
+        self.assertEqual(c1 * c2, Color(0.9, 0.2, 0.04))
 
 
 if __name__ == "__main__":

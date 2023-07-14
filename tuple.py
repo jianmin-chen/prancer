@@ -1,9 +1,10 @@
 from __future__ import annotations
+from utils import equal
 import math
 
 
 class Tuple:
-    def __init__(self, x: float, y: float, z: float, w: float) -> None:
+    def __init__(self, x: float, y: float, z: float, w: float = 1) -> None:
         self.x = x
         self.y = y
         self.z = z
@@ -12,10 +13,10 @@ class Tuple:
 
     def __eq__(self, other: Tuple) -> bool:
         return (
-            other.x == self.x
-            and other.y == self.y
-            and other.z == self.z
-            and other.type == self.type
+            equal(self.x, other.x)
+            and equal(self.y, other.y)
+            and equal(self.z, other.z)
+            and equal(self.w, other.w)
         )
 
     def __add__(self, other: Tuple) -> Tuple:
@@ -39,6 +40,41 @@ class Tuple:
 
     def __repr__(self) -> str:
         return f"({self.x}, {self.y}, {self.z})"
+
+
+class Color:
+    def __init__(self, red, green, blue):
+        self.red = red
+        self.green = green
+        self.blue = blue
+
+    def __eq__(self, other: Color) -> bool:
+        return (
+            equal(self.red, other.red)
+            and equal(self.green, other.green)
+            and equal(self.blue, other.blue)
+        )
+
+    def __add__(self, other: Color) -> Color:
+        return Color(
+            self.red + other.red, self.green + other.green, self.blue + other.blue
+        )
+
+    def __sub__(self, other: Color) -> Color:
+        return Color(
+            self.red - other.red, self.green - other.green, self.blue - other.blue
+        )
+
+    def __mul__(self, other) -> Color:
+        if isinstance(other, Color):
+            # Multiplying two colors
+            return Color(
+                self.red * other.red, self.green * other.green, self.blue * other.blue
+            )
+        return Color(self.red * other, self.green * other, self.blue * other)
+
+    def __repr__(self) -> str:
+        return f"({self.red}, {self.green}, {self.blue})"
 
 
 def point(x: float, y: float, z: float) -> Tuple:
