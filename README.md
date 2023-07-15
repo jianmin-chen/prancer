@@ -25,3 +25,8 @@ After going through the book, the first thing I did was render a desktop backgro
 This is the most fucking detailed code I have written. More comments than LOC.
 
 Might translate this into NumPy to vectorize operations and learn NumPy in more detail. We'll see.
+
+## Going through the book
+
+* Implementing tuples, vectors, and points, which are basically variations on one another
+* Implementing colors

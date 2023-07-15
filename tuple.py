@@ -11,6 +11,10 @@ class Tuple:
         self.w = w
         self.type = "point" if w == 1 else "vector"
 
+    def __getitem__(self, index):
+        indexed = [self.x, self.y, self.z, self.w]
+        return indexed[index]
+
     def __eq__(self, other: Tuple) -> bool:
         return (
             equal(self.x, other.x)
