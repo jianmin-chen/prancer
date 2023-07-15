@@ -14,6 +14,9 @@ class Matrix:
     def set_cell(self, row, col, value):
         self.matrix[row * self.cols + col] = value
 
+    def __copy__(self) -> Matrix:
+        return Matrix(self.rows, self.cols, self.matrix.copy())
+
     def __mul__(self, other) -> Matrix:
         if isinstance(other, Matrix):
             # ! Only applied to 4x4 matrices in this raytracer
@@ -49,8 +52,9 @@ class Matrix:
         return self.matrix[row * self.cols : row * self.cols + self.cols]
 
     def __repr__(self):
-        # TODO: Rearrange into more neater padded version
-        return str(self.matrix)
+        # TODO: Deal with padding
+        rows = ["|".join([str(col) for col in self[row]]) for row in range(self.rows)]
+        return "\n".join(rows)
 
 
 def transpose(matrix: Matrix) -> Matrix:
