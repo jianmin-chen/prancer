@@ -24,7 +24,7 @@ After going through the book, the first thing I did was render a desktop backgro
 
 This is the most fucking detailed code I have written. More comments than LOC.
 
-Might translate this into NumPy to vectorize operations and learn NumPy in more detail. We'll see.
+**Regarding optimization**: I think I might write a version in NumPy for the vectorization benefits and also to learn NumPy? Multithreading would also be something interesting to take a look at.
 
 ## Going through the book
 

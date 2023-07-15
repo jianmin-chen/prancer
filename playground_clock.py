@@ -25,4 +25,4 @@ for p in points:
     c.write_pixel(round(x), round(z), Color(0, 1, 0))
 
 with open("test.ppm", "w") as f:
-    f.write(c.to_ppm(True))
+    f.write(c.to_ppm())

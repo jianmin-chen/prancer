@@ -25,8 +25,8 @@ while p.position.y > 0:
     if p.position.y >= 0:
         x = p.position.x
         y = 550 - p.position.y
-        c.write_pixel(round(x), round(y), Color(0.75, 1, 0.75))
+        c.write_pixel(round(x), round(y), Color(0, 1, 0))
 
 
 with open("test.ppm", "w") as f:
-    f.write(c.to_ppm(True))
+    f.write(c.to_ppm())
