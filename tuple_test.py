@@ -1,5 +1,5 @@
 import math, unittest
-from tuple import Tuple, Color, point, vector, magnitude, normalize, dot, cross
+from tuple import Tuple, Color, point, vector, magnitude, normalize, dot, cross, reflect
 
 
 class Tests(unittest.TestCase):
@@ -324,6 +324,34 @@ class Tests(unittest.TestCase):
         c1 = Color(1, 0.2, 0.4)
         c2 = Color(0.9, 1, 0.1)
         self.assertEqual(c1 * c2, Color(0.9, 0.2, 0.04))
+
+    def test_scenario28(self):
+        """
+        Scenario: Reflecting a vector approaching at 45°
+          Given v ← vector(1, -1, 0)
+            And n ← vector(0, 1, 0)
+          When r ← reflect(v, n)
+          Then r = vector(1, 1, 0)
+        """
+
+        v = vector(1, -1, 0)
+        n = vector(0, 1, 0)
+        r = reflect(v, n)
+        self.assertEqual(r, vector(1, 1, 0))
+
+    def test_scenario29(self):
+        """
+        Scenario: Reflecting a vector off a slanted surface
+          Given v ← vector(0, -1, 0)
+            And n ← vector(√2/2, √2/2, 0)
+          When r ← reflect(v, n)
+          Then r = vector(1, 0, 0)
+        """
+
+        v = vector(0, -1, 0)
+        n = vector(math.sqrt(2) / 2, math.sqrt(2) / 2, 0)
+        r = reflect(v, n)
+        self.assertEqual(r, vector(1, 0, 0))
 
 
 if __name__ == "__main__":

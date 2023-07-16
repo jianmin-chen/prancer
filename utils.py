@@ -33,3 +33,7 @@ def interpolate(value: float, minimum: float, maximum: float) -> float:
 
     interpolated = max(minimum, min(maximum, (1 - value) * minimum + value * maximum))
     return interpolated
+
+
+def rgb_scaled(red, green, blue):
+    return (red / 255, green / 255, blue / 255)

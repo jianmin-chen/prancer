@@ -178,3 +178,19 @@ def cross(a: Tuple, b: Tuple) -> float:
         a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x
     )
     return product
+
+
+def reflect(initial: Tuple, normal: Tuple) -> Tuple:
+    """
+    Reflects a vector.
+
+        Parameters:
+            initial (Tuple)
+            normal (Tuple)
+
+        Returns:
+            reflected (Tuple)
+    """
+
+    reflected = initial - normal * 2 * dot(initial, normal)
+    return reflected

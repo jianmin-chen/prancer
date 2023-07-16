@@ -1,8 +1,10 @@
+from math import sqrt, pi
+from material import Material
 from matrix import identity_matrix
 from ray import Ray, Intersection, Intersections, hit
 from sphere import Sphere
-from transformations import translation, scaling
-from tuple import point, vector
+from transformations import translation, scaling, rotation_z
+from tuple import point, vector, normalize
 import unittest
 
 
@@ -151,6 +153,124 @@ class Tests(unittest.TestCase):
         s.set_transform(translation(5, 0, 0))
         xs = r.intersect(s)
         self.assertEqual(xs.count, 0)
+
+    def test_scenario10(self):
+        """
+        Scenario: The normal on a sphere at a point on the x axis
+            Given s ← sphere()
+            When n ← normal_at(s, point(1, 0, 0))
+            Then n = vector(1, 0, 0)
+        """
+
+        s = Sphere()
+        n = s.normal_at(point(1, 0, 0))
+        self.assertEqual(n, vector(1, 0, 0))
+
+    def test_scenario11(self):
+        """
+        Scenario: The normal on a sphere at a point on the y axis
+            Given s ← sphere()
+            When n ← normal_at(s, point(0, 1, 0))
+            Then n = vector(0, 1, 0)
+        """
+
+        s = Sphere()
+        n = s.normal_at(point(0, 1, 0))
+        self.assertEqual(n, vector(0, 1, 0))
+
+    def test_scenario12(self):
+        """
+        Scenario: The normal on a sphere at a point on the z axis
+            Given s ← sphere()
+            When n ← normal_at(s, point(0, 0, 1))
+            Then n = vector(0, 0, 1)
+        """
+
+        s = Sphere()
+        n = s.normal_at(point(0, 0, 1))
+        self.assertEqual(n, vector(0, 0, 1))
+
+    def test_scenario13(self):
+        """
+        Scenario: The normal on a sphere at a nonaxial point
+            Given s ← sphere()
+            When n ← normal_at(s, point(√3/3, √3/3, √3/3))
+            Then n = vector(√3/3, √3/3, √3/3)
+        """
+
+        s = Sphere()
+        n = s.normal_at(point(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3))
+        self.assertEqual(n, vector(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3))
+
+    def test_scenario14(self):
+        """
+        Scenario: The normal is a normalized vector
+            Given s ← sphere()
+            When n ← normal_at(s, point(√3/3, √3/3, √3/3))
+            Then n = normalize(n)
+        """
+
+        s = Sphere()
+        n = s.normal_at(point(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3))
+        self.assertEqual(n, normalize(n))
+
+    def test_scenario15(self):
+        """
+        Scenario: Computing the normal on a translated sphere
+            Given s ← sphere()
+            And set_transform(s, translation(0, 1, 0))
+            When n ← normal_at(s, point(0, 1.70711, -0.70711))
+            Then n = vector(0, 0.70711, -0.70711)
+        """
+
+        s = Sphere()
+        s.set_transform(translation(0, 1, 0))
+        n = s.normal_at(point(0, 1.70711, -0.70711))
+        self.assertEqual(n, vector(0, 0.70711, -0.70711))
+
+    def test_scenario16(self):
+        """
+        Scenario: Computing the normal on a transformed sphere
+            Given s ← sphere()
+            And m ← scaling(1, 0.5, 1) * rotation_z(π/5)
+            And set_transform(s, m)
+            When n ← normal_at(s, point(0, √2/2, -√2/2))
+            Then n = vector(0, 0.97014, -0.24254)
+        """
+
+        s = Sphere()
+        m = scaling(1, 0.5, 1) * rotation_z(pi / 5)
+        s.set_transform(m)
+        n = s.normal_at(point(0, sqrt(2) / 2, -(sqrt(2) / 2)))
+        self.assertEqual(n, vector(0, 0.97014, -0.24254))
+
+    def test_scenario17(self):
+        """
+        Scenario: A sphere has a default material
+            Given s ← sphere()
+            When m ← s.material
+            Then m = material()
+        """
+
+        s = Sphere()
+        m = s.material
+        self.assertEqual(m, Material())
+
+    def test_scenario18(self):
+        """
+        Scenario: A sphere may be assigned a material
+            Given s ← sphere()
+            And m ← material()
+            And m.ambient ← 1
+            When s.material ← m
+            Then s.material = m
+        """
+
+        s = Sphere()
+        m = Material()
+        m.ambient = 1
+        s.material = m
+        self.assertEqual(s.material, m)
 
 
 if __name__ == "__main__":
