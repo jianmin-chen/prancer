@@ -1,6 +1,7 @@
 from copy import copy
 from math import cos, sin
 from matrix import Matrix, identity_matrix
+from tuple import Tuple, normalize, cross
 
 
 def translation(x: float, y: float, z: float) -> Matrix:
@@ -126,3 +127,33 @@ def shearing(
     sheared.set_cell(2, 0, zx)
     sheared.set_cell(2, 1, zy)
     return sheared
+
+
+def view_transform(start: Tuple, to: Tuple, up: Tuple):
+    forward = normalize(to - start)
+    upn = normalize(up)
+    left = cross(forward, upn)
+    true_up = cross(left, forward)
+    orientation = Matrix(
+        4,
+        4,
+        [
+            left.x,
+            left.y,
+            left.z,
+            0,
+            true_up.x,
+            true_up.y,
+            true_up.z,
+            0,
+            -forward.x,
+            -forward.y,
+            -forward.z,
+            0,
+            0,
+            0,
+            0,
+            1,
+        ],
+    )
+    return orientation * translation(-start.x, -start.y, -start.z)

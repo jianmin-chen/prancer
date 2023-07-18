@@ -1,5 +1,5 @@
 from math import pi, sqrt
-from matrix import inverse
+from matrix import Matrix, inverse, identity_matrix
 from transformations import (
     scaling,
     translation,
@@ -7,6 +7,7 @@ from transformations import (
     rotation_y,
     rotation_z,
     shearing,
+    view_transform,
 )
 from tuple import point, vector
 import unittest
@@ -281,6 +282,95 @@ class Tests(unittest.TestCase):
         C = translation(10, 5, 7)
         T = C * B * A
         self.assertEqual(T * p, point(15, 0, 7))
+
+    def test_scenario20(self):
+        """
+        Scenario: The transformation matrix for the default orientation
+            Given from ← point(0, 0, 0)
+            And to ← point(0, 0, -1)
+            And up ← vector(0, 1, 0)
+            When t ← view_transform(from, to, up)
+            Then t = identity_matrix
+        """
+
+        start = point(0, 0, 0)
+        to = point(0, 0, -1)
+        up = vector(0, 1, 0)
+        t = view_transform(start, to, up)
+        self.assertEqual(t, identity_matrix)
+
+    def test_scenario21(self):
+        """
+        Scenario: A view transformation matrix looking in positive z direction
+            Given from ← point(0, 0, 0)
+            And to ← point(0, 0, 1)
+            And up ← vector(0, 1, 0)
+            When t ← view_transform(from, to, up)
+            Then t = scaling(-1, 1, -1)
+        """
+
+        start = point(0, 0, 0)
+        to = point(0, 0, 1)
+        up = vector(0, 1, 0)
+        t = view_transform(start, to, up)
+        self.assertEqual(t, scaling(-1, 1, -1))
+
+    def test_scenario22(self):
+        """
+        Scenario: The view transformation moves the world
+            Given from ← point(0, 0, 8)
+            And to ← point(0, 0, 0)
+            And up ← vector(0, 1, 0)
+            When t ← view_transform(from, to, up)
+            Then t = translation(0, 0, -8)
+        """
+
+        start = point(0, 0, 8)
+        to = point(0, 0, 0)
+        up = vector(0, 1, 0)
+        t = view_transform(start, to, up)
+        self.assertEqual(t, translation(0, 0, -8))
+
+    def test_scenario23(self):
+        """
+        Scenario: An arbitrary view transformation
+            Given from ← point(1, 3, 2)
+            And to ← point(4, -2, 8)
+            And up ← vector(1, 1, 0)
+            When t ← view_transform(from, to, up)
+            Then t is the following 4x4 matrix:
+              | -0.50709 | 0.50709 | 0.67612  | -2.36643 |
+              | 0.76772  | 0.60609 | 0.12122  | -2.82843 |
+              | -0.35857 | 0.59761 | -0.71714 | 0.00000  |
+              | 0.00000  | 0.00000 | 0.00000  | 1.00000  |
+        """
+
+        def to_array(s):
+            array = [
+                float(i)
+                for i in filter(
+                    lambda c: c.strip() not in ["\n", "", ","], s.split("|")
+                )
+            ]
+            return array
+
+        start = point(1, 3, 2)
+        to = point(4, -2, 8)
+        up = vector(1, 1, 0)
+        t = view_transform(start, to, up)
+        self.assertEqual(
+            t,
+            Matrix(
+                4,
+                4,
+                to_array(
+                    """| -0.50709 | 0.50709 | 0.67612  | -2.36643 |
+              | 0.76772  | 0.60609 | 0.12122  | -2.82843 |
+              | -0.35857 | 0.59761 | -0.71714 | 0.00000  |
+              | 0.00000  | 0.00000 | 0.00000  | 1.00000  |"""
+                ),
+            ),
+        )
 
 
 if __name__ == "__main__":

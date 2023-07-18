@@ -24,7 +24,7 @@ After going through the book, the first thing I did was render a desktop backgro
 
 * This is the most fucking detailed code I have written. More comments than LOC.
 * I have to package it to use relative imports? NPM sucks with dependencies but you don't have to deal with this at least. Python environments are seriously confusing (not their usage, but e.g. the fact that Python and Anaconda both provide environment support of their own).
-* **Regarding optimization**: I think I might write a version in NumPy for the vectorization benefits and also to learn NumPy? Multithreading would also be something interesting to take a look at.
+* **Regarding optimization**: I think I might write a version in NumPy for the vectorization benefits and also to learn NumPy? Multithreading would also be something interesting to take a look at, in addition to OpenGL (using GPU instead of CPU, although a different file format would have to be used). Wait, isn't this literally what a shader does? LOL
 
 ## Going through the book
 

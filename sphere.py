@@ -1,14 +1,17 @@
+from __future__ import annotations
+from copy import copy
+from canvas import Color
 from material import Material
 from matrix import Matrix, identity_matrix, inverse, transpose
 from tuple import Tuple, point, normalize
 
 
-class Sphere:
+class Sphere(object):
     def __init__(
         self,
         origin: Tuple = point(0, 0, 0),
         radius: float = 1,
-        material: Material = Material(),
+        material: Material = Material(Color(1, 1, 1), 0.1, 0.9, 0.9, 200),
     ):
         self.origin = origin
         self.radius = radius
@@ -42,6 +45,19 @@ class Sphere:
         world_normal.w = 0
         normal = normalize(world_normal)
         return normal
+
+    def __copy__(self) -> Sphere:
+        s = Sphere(copy(self.origin), self.radius, copy(self.material))
+        s.transform = copy(self.transform)
+        return s
+
+    def __eq__(self, other: Sphere) -> bool:
+        return (
+            self.origin == other.origin
+            and self.radius == other.radius
+            and self.transform == other.transform
+            and self.material == other.material
+        )
 
     def __repr__(self):
         return f"Sphere with origin at {self.origin} and radius {self.radius}"

@@ -1,10 +1,12 @@
 from __future__ import annotations
+from copy import copy
+from math import pow
 from canvas import Color
 from lights import PointLight
-from tuple import Tuple, dot, normalize, reflect
+from tuple import Tuple, cross, dot, normalize, reflect
 
 
-class Material:
+class Material(object):
     def __init__(
         self,
         color: Color = Color(1, 1, 1),
@@ -18,6 +20,14 @@ class Material:
         self.diffuse = diffuse
         self.specular = specular
         self.shininess = shininess
+
+    def __repr__(self):
+        return f"{self.color} material with ambient: {self.ambient}, diffuse: {self.diffuse}, specular: {self.specular}, shininess: {self.shininess}"
+
+    def __copy__(self) -> Material:
+        return Material(
+            copy(self.color), self.ambient, self.diffuse, self.specular, self.shininess
+        )
 
     def __eq__(self, other: Material) -> bool:
         return (
@@ -37,7 +47,7 @@ def lighting(
 
         Parameters:
             material (Material)
-            light (Color)
+            light (PointLight)
             point (Tuple): Tuple with type=point
             eyev (Tuple): Tuple with type=vector
             normalv (Tuple): Tuple with type=vector
@@ -72,7 +82,7 @@ def lighting(
             specular = Color(0, 0, 0)
         else:
             # Compute the specular contribution
-            factor = reflect_dot_eye**material.shininess
+            factor = pow(reflect_dot_eye, material.shininess)
             specular = light.intensity * material.specular * factor
 
     # Add the three contributions together to get the final shading

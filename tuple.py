@@ -42,12 +42,15 @@ class Tuple:
     def __neg__(self) -> Tuple:
         return Tuple(-self.x, -self.y, -self.z, -self.w)
 
+    def __copy__(self) -> Tuple:
+        return Tuple(self.x, self.y, self.z, self.w)
+
     def __repr__(self) -> str:
         return f"({self.x}, {self.y}, {self.z})"
 
 
 class Color:
-    def __init__(self, red, green, blue):
+    def __init__(self, red: float, green: float, blue: float):
         self.red = red
         self.green = green
         self.blue = blue
@@ -76,6 +79,9 @@ class Color:
                 self.red * other.red, self.green * other.green, self.blue * other.blue
             )
         return Color(self.red * other, self.green * other, self.blue * other)
+
+    def __copy__(self) -> Color:
+        return Color(self.red, self.green, self.blue)
 
     def __repr__(self) -> str:
         return f"({self.red}, {self.green}, {self.blue})"
